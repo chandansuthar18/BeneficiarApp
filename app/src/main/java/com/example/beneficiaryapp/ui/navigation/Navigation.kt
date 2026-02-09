@@ -1,12 +1,15 @@
 package com.example.beneficiaryapp.ui.navigation
 
+import android.R.attr.type
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.beneficiaryapp.ui.screens.*
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -45,5 +48,15 @@ fun AppNavigation() {
         }
 
         // Add any other screens you have
+        composable(
+            route = "edit_beneficiary/{beneficiaryId}",
+            arguments = listOf(navArgument("beneficiaryId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val beneficiaryId = backStackEntry.arguments?.getString("beneficiaryId") ?: ""
+            EditBeneficiaryScreen(
+                navController = navController,
+                beneficiaryId = beneficiaryId
+            )
+        }
     }
 }

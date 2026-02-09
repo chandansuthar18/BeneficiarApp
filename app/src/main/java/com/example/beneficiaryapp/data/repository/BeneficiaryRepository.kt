@@ -357,6 +357,68 @@ class BeneficiaryRepository @Inject constructor(
 
         Log.d(TAG, "✅ Sync completed")
     }
+
+    suspend fun updateBeneficiary(
+        id: String,
+        name: String,
+        age: String,
+        cnic: String,
+        phoneNumber: String,
+        temporaryAddress: String,
+        permanentAddress: String,
+        issueDate: String,
+        expireDate: String
+    ): Result<Unit> {
+        return withContext(Dispatchers.IO) {
+            try {
+                // Get existing beneficiary
+                val existing = beneficiaryDao.getBeneficiaryById(id)
+                if (existing == null) {
+                    return@withContext Result.failure(Exception("Beneficiary not found"))
+                }
+
+                // Update entity
+                val updated = existing.copy(
+                    name = name,
+                    age = age,
+                    cnic = cnic,
+                    phoneNumber = phoneNumber,
+                    temporaryAddress = temporaryAddress,
+                    permanentAddress = permanentAddress,
+                    issueDate = issueDate,
+                    expireDate = expireDate,
+                    isSynced = false // Mark as unsynced for re-sync
+                )
+
+                // Save to database
+                beneficiaryDao.updateBeneficiary(updated)
+
+                // Add to sync queue
+                val beneficiaryJson = gson.toJson(updated)
+                syncQueueDao.insertSyncJob(
+                    SyncQueueEntity(
+                        operation = "UPDATE",
+                        dataType = "BENEFICIARY",
+                        dataId = id,
+                        dataJson = beneficiaryJson,
+                        priority = 1,
+                        createdAt = System.currentTimeMillis(),
+                        attempts = 0
+                    )
+                )
+
+                // Try to sync immediately if online
+                if (isNetworkAvailable()) {
+                    syncToFirebase(id)
+                }
+
+                Result.success(Unit)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error updating beneficiary: ${e.message}", e)
+                Result.failure(e)
+            }
+        }
+    }
     // Delete beneficiary
     suspend fun deleteBeneficiary(beneficiaryId: String): Result<Unit> {
         return withContext(Dispatchers.IO) {
