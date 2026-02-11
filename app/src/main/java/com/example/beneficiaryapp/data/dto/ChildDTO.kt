@@ -1,5 +1,8 @@
 package com.example.beneficiaryapp.data.dto
 
+import androidx.annotation.Keep
+
+@Keep
 data class ChildDTO(
     val name: String,
     val gender: String,

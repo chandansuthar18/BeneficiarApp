@@ -23,16 +23,30 @@ android {
             useSupportLibrary = true
         }
     }
-
+    signingConfigs {
+        create("release") {
+            storeFile = file("release-keystore.jks")
+            storePassword = "Chandan@123"
+            keyAlias = "beneficiar-app"
+            keyPassword = "Chandan@123"
+        }
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
+            isDebuggable = true  // Add this temporarily
+            signingConfig = signingConfigs.getByName("release")
+
+            // Add these for debugging
+            buildConfigField("boolean", "LOG_FIREBASE", "true")
+            buildConfigField("String", "BUILD_VARIANT", "\"RELEASE_DEBUG\"")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
-    }
+        }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

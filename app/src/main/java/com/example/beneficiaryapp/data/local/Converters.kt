@@ -1,5 +1,6 @@
 package com.example.beneficiaryapp.data.local
 
+import androidx.annotation.Keep
 import androidx.room.TypeConverter
 import com.example.beneficiaryapp.data.BeneficiaryStatus
 import com.example.beneficiaryapp.data.ChildData
@@ -7,6 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
 
+@Keep
 class Converters {
     private val gson = Gson()
 

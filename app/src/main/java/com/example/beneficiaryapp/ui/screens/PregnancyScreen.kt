@@ -72,14 +72,14 @@ fun PregnancyScreen(navController: NavHostController? = null) {
                     )
 
                     // Navigate back after success
-                    kotlinx.coroutines.delay(2000)
+                    kotlinx.coroutines.delay(1000)
                     navController?.popBackStack()
                 }
             } else {
                 val error = result.exceptionOrNull()?.message ?: "Failed to save data"
                 scope.launch {
                     snackbarHostState.showSnackbar(
-                        message = "❌ Error: $error",
+                        message = "Error: $error",
                         duration = SnackbarDuration.Long
                     )
                 }

@@ -1,21 +1,30 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Room Database
+-keep class * extends androidx.room.RoomDatabase
+-keep class * extends androidx.room.Entity
+-keep class * extends androidx.room.TypeConverter
+-keep @androidx.room.Entity class ** { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Room DAOs
+-keep class * extends androidx.room.Dao { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Room specific
+-keepclassmembers class * {
+    @androidx.room.* *;
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Keep all classes in your data package
+-keep class com.example.beneficiaryapp.data.** { *; }
+-keep class com.example.beneficiaryapp.data.local.** { *; }
+-keep class com.example.beneficiaryapp.data.dto.** { *; }
+-keep class com.example.beneficiaryapp.data.repository.** { *; }
+
+# Keep Firebase classes
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+
+# Keep Hilt classes
+-keep class com.example.beneficiaryapp.Hilt_* { *; }
+-keep @javax.inject.Inject class * { *; }
+
+# Keep Kotlin coroutines
+-keep class kotlinx.coroutines.** { *; }

@@ -120,7 +120,7 @@ fun LactatingScreen(navController: NavHostController? = null) {
                     )
 
                     // Navigate back after success
-                    kotlinx.coroutines.delay(2000)
+                    kotlinx.coroutines.delay(1000)
                     navController?.popBackStack()
                 }
             } else {

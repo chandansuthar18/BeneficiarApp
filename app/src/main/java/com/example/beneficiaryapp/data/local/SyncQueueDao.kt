@@ -1,8 +1,10 @@
 package com.example.beneficiaryapp.data.local
 
+import androidx.annotation.Keep
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
+@Keep
 @Dao
 interface SyncQueueDao {
 

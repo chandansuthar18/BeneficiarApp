@@ -1,9 +1,11 @@
 package com.example.beneficiaryapp.data.local
 
+import androidx.annotation.Keep
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
+@Keep
 interface BeneficiaryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -36,6 +38,11 @@ interface BeneficiaryDao {
     @Query("SELECT COUNT(*) FROM beneficiaries WHERE is_synced = 0")
     suspend fun getUnsyncedCount(): Int
 
+    // FIXED: Changed createdAt to created_at
     @Query("SELECT * FROM beneficiaries ORDER BY created_at DESC")
     fun getAllBeneficiaries(): Flow<List<LocalBeneficiaryEntity>>
+
+    @Query("SELECT * FROM beneficiaries")
+    suspend fun getAllBeneficiariesStatic(): List<LocalBeneficiaryEntity>
+
 }

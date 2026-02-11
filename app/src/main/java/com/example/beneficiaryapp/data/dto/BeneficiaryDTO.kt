@@ -1,7 +1,9 @@
 package com.example.beneficiaryapp.data.dto
 
+import androidx.annotation.Keep
 import java.util.*
 
+@Keep
 data class BeneficiaryDTO(
     val id: String,
     val userId: String,

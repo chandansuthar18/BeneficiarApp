@@ -46,7 +46,7 @@ fun EditBeneficiaryScreen(
     LaunchedEffect(successMessage) {
         if (successMessage != null) {
             // Navigate back after a short delay
-            kotlinx.coroutines.delay(1500)
+            kotlinx.coroutines.delay(1000)
             navController.popBackStack()
         }
     }
@@ -362,7 +362,7 @@ fun EditBeneficiaryScreen(
     if (successMessage != null) {
         LaunchedEffect(successMessage) {
             // Auto-dismiss after 3 seconds
-            kotlinx.coroutines.delay(3000)
+            kotlinx.coroutines.delay(1000)
             viewModel.clearSuccessMessage()
         }
 

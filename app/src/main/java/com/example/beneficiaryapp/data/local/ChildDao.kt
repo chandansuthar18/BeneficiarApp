@@ -1,8 +1,10 @@
 package com.example.beneficiaryapp.data.local
 
+import androidx.annotation.Keep
 import androidx.room.*
 
 @Dao
+@Keep
 interface ChildDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

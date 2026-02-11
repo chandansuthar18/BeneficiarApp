@@ -107,9 +107,9 @@ class BeneficiaryViewModel @Inject constructor(
             val json = gson.toJson(basicInfo)
             val sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             sharedPref.edit().putString(KEY_BASIC_INFO, json).apply()
-            Log.d(TAG, "✅ Basic info saved to storage")
+            Log.d(TAG, "Basic info saved to storage")
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Error saving basic info to storage: ${e.message}")
+            Log.e(TAG, "  Error saving basic info to storage: ${e.message}")
         }
     }
 
@@ -141,10 +141,10 @@ class BeneficiaryViewModel @Inject constructor(
                     "LACTATING" -> BeneficiaryStatus.LACTATING
                     else -> null
                 }
-                Log.d(TAG, "✅ Basic info loaded from storage")
+                Log.d(TAG, "Basic info loaded from storage")
             }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Error loading basic info from storage: ${e.message}")
+            Log.e(TAG, "  Error loading basic info from storage: ${e.message}")
         }
     }
 
@@ -153,9 +153,9 @@ class BeneficiaryViewModel @Inject constructor(
         try {
             val sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             sharedPref.edit().remove(KEY_BASIC_INFO).apply()
-            Log.d(TAG, "✅ Stored basic info cleared")
+            Log.d(TAG, "Stored basic info cleared")
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Error clearing stored basic info: ${e.message}")
+            Log.e(TAG, "Error clearing stored basic info: ${e.message}")
         }
     }
 
@@ -208,7 +208,7 @@ class BeneficiaryViewModel @Inject constructor(
                     }
                 }
 
-                Log.d(TAG, "📊 Preparing data for save...")
+                Log.d(TAG, "Preparing data for save...")
                 Log.d(TAG, "Beneficiary Status: ${status.name}")
                 Log.d(TAG, "Is Pregnancy Mode: $isPregnancy")
 
@@ -240,7 +240,7 @@ class BeneficiaryViewModel @Inject constructor(
 
                 if (result.isSuccess) {
                     val beneficiaryId = result.getOrThrow()
-                    Log.d(TAG, "✅ Data saved successfully! ID: $beneficiaryId")
+                    Log.d(TAG, "Data saved successfully! ID: $beneficiaryId")
 
                     // Clear stored basic info after successful save
                     clearStoredBasicInfo()
@@ -248,24 +248,21 @@ class BeneficiaryViewModel @Inject constructor(
                     // Check if online and synced
                     val isOnline = beneficiaryRepository.isNetworkAvailable()
                     if (isOnline) {
-                        // Wait a moment for sync to complete
                         delay(1000) // Small delay to allow sync
-                        saveResult.value = Result.success("✅ Data saved and synced to cloud!")
+                        saveResult.value = Result.success("Data saved and synced to cloud!")
                     } else {
-                        saveResult.value = Result.success("📱 Data saved locally. Will sync when online.")
+                        saveResult.value = Result.success("Data saved locally. Will sync when online.")
                     }
 
-                    // Don't clear form immediately - let user see success message
-                    // clearFormData() // Remove this line or call it later
 
                 } else {
                     val error = result.exceptionOrNull()
-                    Log.e(TAG, "❌ Save failed: ${error?.message}", error)
+                    Log.e(TAG, "Save failed: ${error?.message}", error)
                     saveResult.value = Result.failure(error ?: Exception("Unknown error"))
                 }
 
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Exception during save: ${e.message}", e)
+                Log.e(TAG, "Exception during save: ${e.message}", e)
                 saveResult.value = Result.failure(e)
             } finally {
                 isLoading.value = false
@@ -321,7 +318,7 @@ class BeneficiaryViewModel @Inject constructor(
 
     // Clear all form data
     fun clearFormData() {
-        Log.d(TAG, "🧹 Clearing form data")
+        Log.d(TAG, "Clearing form data")
 
         name.value = ""
         age.value = ""
@@ -356,7 +353,7 @@ class BeneficiaryViewModel @Inject constructor(
         val updatedList = childrenData.value.toMutableList()
         updatedList.add(child)
         childrenData.value = updatedList
-        Log.d(TAG, "👶 Child added: ${child.name}. Total: ${childrenData.value.size}")
+        Log.d(TAG, "Child added: ${child.name}. Total: ${childrenData.value.size}")
     }
 
     fun removeChild(index: Int) {
@@ -364,7 +361,7 @@ class BeneficiaryViewModel @Inject constructor(
             val updatedList = childrenData.value.toMutableList()
             val removed = updatedList.removeAt(index)
             childrenData.value = updatedList
-            Log.d(TAG, "🗑️ Child removed: ${removed.name}. Remaining: ${childrenData.value.size}")
+            Log.d(TAG, " Child removed: ${removed.name}. Remaining: ${childrenData.value.size}")
         }
     }
 
@@ -373,20 +370,20 @@ class BeneficiaryViewModel @Inject constructor(
             val updatedList = childrenData.value.toMutableList()
             updatedList[index] = child
             childrenData.value = updatedList
-            Log.d(TAG, "✏️ Child updated: ${child.name}")
+            Log.d(TAG, "Child updated: ${child.name}")
         }
     }
 
     // Set proof images
     fun setProofImages(images: List<String>) {
         proofImages.value = images
-        Log.d(TAG, "📸 ${images.size} proof images set")
+        Log.d(TAG, "${images.size} proof images set")
     }
 
     // Set beneficiary status
     fun setBeneficiaryStatus(status: BeneficiaryStatus) {
         beneficiaryStatus.value = status
-        Log.d(TAG, "🎯 Status set to: ${status.name}")
+        Log.d(TAG, "Status set to: ${status.name}")
     }
 
     // Validation
@@ -410,14 +407,14 @@ class BeneficiaryViewModel @Inject constructor(
     // Sync pending data
     fun syncPendingData() {
         viewModelScope.launch {
-            Log.d(TAG, "🔄 Manually triggering sync of pending data...")
+            Log.d(TAG, "Manually triggering sync of pending data...")
             try {
                 withContext(Dispatchers.IO) {
                     beneficiaryRepository.syncAllPendingData()
                 }
                 Log.d(TAG, "✅ Sync initiated")
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Error initiating sync: ${e.message}")
+                Log.e(TAG, "Error initiating sync: ${e.message}")
             }
         }
     }

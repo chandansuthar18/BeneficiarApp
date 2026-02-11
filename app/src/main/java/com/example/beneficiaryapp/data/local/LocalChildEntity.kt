@@ -1,9 +1,11 @@
 package com.example.beneficiaryapp.data.local
 
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
 
+@Keep
 @Entity(tableName = "children")
 data class LocalChildEntity(
     @PrimaryKey(autoGenerate = true)
